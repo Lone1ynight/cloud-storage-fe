@@ -1,13 +1,37 @@
 import { register } from '@/api';
-import { onSubmitAuth } from '@/helpers/auth';
+import { AuthRequestType } from '@/types/auth';
 import {
   Button,
   Form,
-  Input
+  Input,
+  notification
 } from 'antd';
 import styles from "./auth.module.scss";
 
 export const RegisterForm = () => {
+  const onSubmit =  (data: AuthRequestType) => {
+    try {
+      register(data).then(data => {
+        console.log(data)
+        notification.success({
+          message: "Success!",
+          description: `${data.fullName}, go to login!`,
+          duration: 2,
+        });
+
+        return data
+      })
+    } catch (err) {
+      console.warn(err);
+
+      notification.error({
+        message: "Error!",
+        description: "Registration error",
+        duration: 2,
+      });
+    }
+  };
+
   return (
     <div className={styles.formBlock}>
       <Form
@@ -15,15 +39,19 @@ export const RegisterForm = () => {
         labelCol={{
           span: 8,
         }}
-        onFinish={(data) => onSubmitAuth(data, register)}
+        onFinish={(data) => onSubmit(data)}
       >
         <Form.Item
           label="E-Mail"
           name="email"
           rules={[
             {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
               required: true,
-              message: "Укажите почту",
+              message: 'Please input your E-mail!',
             },
           ]}
         >
@@ -36,7 +64,7 @@ export const RegisterForm = () => {
           rules={[
             {
               required: true,
-              message: "Укажите полное имя",
+              message: "Enter full name",
             },
           ]}
         >
@@ -49,7 +77,7 @@ export const RegisterForm = () => {
           rules={[
             {
               required: true,
-              message: "Укажите пароль",
+              message: "Enter password",
             },
           ]}
         >

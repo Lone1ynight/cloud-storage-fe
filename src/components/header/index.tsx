@@ -1,4 +1,4 @@
-import { logout } from '@/api';
+import { signOut } from 'next-auth/react';
 import React from "react";
 import { Layout, Avatar, Menu, Popover, Button } from "antd";
 import styles from "./Header.module.scss";
@@ -11,10 +11,8 @@ export const Header: React.FC = () => {
   const selectedMenu = router.pathname;
 
   const onClickLogout = () => {
-    if (window.confirm("Вы действительно хотите выйти?")) {
-      logout();
-      location.href = "/";
-    }
+      signOut()
+      location.href = "/auth";
   };
 
   return (

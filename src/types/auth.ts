@@ -6,6 +6,11 @@ export type AuthRequestType = {
 
 export type AuthResponseType = {
   access_token: string
+  user: User
+}
+
+export type RegisterResponseType = {
+
 }
 
 export type User = {

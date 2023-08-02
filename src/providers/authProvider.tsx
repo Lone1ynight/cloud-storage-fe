@@ -1,23 +1,40 @@
-import React from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 type AuthProviderProps = {
   children: React.ReactElement;
-  // token: string
 };
 
-export const AuthProvider = (props: AuthProviderProps) => {
-  // useEffect( () => {
-  // //   const token = cookies.get('_token');
-  // console.log(props.token)
-  //   if(!props.token){
-  //     destroyCookie(null, "_token", { path: "/dashboard/auth" });
-  //     return;
-  //   }
-  //
-  // }, [props.token]);
+export function AuthProvider(props: AuthProviderProps) {
+  const router = useRouter();
+  const session = useSession();
 
-  //TODO: need to finish
 
+  useEffect(() => {
+    checkAuthStatus();
+  }, [session.status]);
+
+  async function checkAuthStatus() {
+    if (session.status === 'loading') return;
+
+    const isLoggedIn = session.status === 'authenticated';
+
+    if (!isLoggedIn) {
+      router.replace('/auth');
+      return;
+    }
+
+    if (isLoggedIn) {
+      router.replace('/dashboard')
+    }
+  }
+
+  if (session.status === 'loading') {
+    return (
+      <>Lodaer</>
+    );
+  }
 
   return props.children;
 }

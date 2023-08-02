@@ -3,25 +3,26 @@ import {
   AuthResponseType,
 } from '@/types/auth';
 import { notification } from 'antd';
-import { setCookie } from 'nookies';
+import { signIn } from 'next-auth/react';
 
 type AuthFunctionType = (data: AuthRequestType) => Promise<AuthResponseType>;
 
 export const onSubmitAuth = async (data: AuthRequestType, func: AuthFunctionType) => {
   try {
-    const { access_token } = await func(data);
-
-    notification.success({
-      message: "Успешно!",
-      description: "Переходим в админ-панель...",
-      duration: 2,
+    const result = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false,
     });
 
-    setCookie(null, "_token", access_token, {
-      path: "/",
-    });
+    if(result) {
+      notification.success({
+        message: "Успешно!",
+        description: "Переходим в админ-панель...",
+        duration: 2,
+      });
+    }
 
-    location.href = "/dashboard";
   } catch (err) {
     console.warn("LoginForm", err);
 

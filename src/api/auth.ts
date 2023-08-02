@@ -7,12 +7,12 @@ import {
 
 import { destroyCookie } from 'nookies';
 
-export const login = async (data: AuthRequestType): Promise<AuthResponseType> => {
-  return (await axios.post('auth/login', data)).data
+export const login = async (data: Record<"email" | "password", string> | undefined): Promise<AuthResponseType> => {
+  return (await axios.post('/auth/login', data)).data
 }
 
-export const register = async (data: AuthRequestType): Promise<AuthResponseType> => {
-  return (await axios.post('auth/register', data)).data
+export const register = async (data: AuthRequestType): Promise<User> => {
+  return (await axios.post('/auth/register', data)).data
 }
 
 export const getMe = async (): Promise<User> => {
