@@ -1,8 +1,9 @@
 import { getAllFiles } from '@/api';
+import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { Layout } from '@/layouts/Layout';
 
 const DashboardPage = () => {
-  return <div>Dashboard</div>
+  return <DashboardLayout>Dashboard</DashboardLayout>
 }
 
 DashboardPage.getLayout = (page: React.ReactNode) => {
