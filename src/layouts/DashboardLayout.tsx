@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "@/styles/Home.module.scss";
+import styles from "@/styles/home.module.scss";
 import { useRouter } from "next/router";
 // import { UploadButton } from "@/components/UploadButton";
 import { Menu } from "antd";

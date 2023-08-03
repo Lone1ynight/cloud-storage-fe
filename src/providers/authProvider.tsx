@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
 import React, { useEffect } from 'react';
 
 type AuthProviderProps = {
@@ -18,6 +19,8 @@ export function AuthProvider(props: AuthProviderProps) {
   async function checkAuthStatus() {
     if (session.status === 'loading') return;
 
+    // @ts-ignore
+    const token = session?.data?.accessToken;
     const isLoggedIn = session.status === 'authenticated';
 
     if (!isLoggedIn) {
@@ -26,6 +29,7 @@ export function AuthProvider(props: AuthProviderProps) {
     }
 
     if (isLoggedIn) {
+      setCookie(null, "access_token", token);
       router.replace('/dashboard')
     }
   }

@@ -12,7 +12,6 @@ export const RegisterForm = () => {
   const onSubmit =  (data: AuthRequestType) => {
     try {
       register(data).then(data => {
-        console.log(data)
         notification.success({
           message: "Success!",
           description: `${data.fullName}, go to login!`,

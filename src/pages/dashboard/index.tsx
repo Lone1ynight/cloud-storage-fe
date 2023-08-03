@@ -1,18 +1,34 @@
-import { getAllFiles } from '@/api';
+import {
+  getAllFiles,
+} from '@/api/index';
+import { FileList } from '@/components/fileList';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { Layout } from '@/layouts/Layout';
+import { FileItem } from '@/types/files';
+import {
+  NextPage,
+  NextPageContext
+} from 'next';
+import React from 'react';
 
-const DashboardPage = () => {
-  return <DashboardLayout>Dashboard</DashboardLayout>
+interface Props {
+  items: FileItem[];
 }
 
+const DashboardPage: NextPage<Props> = ({items}) => {
+  return <DashboardLayout>
+    <FileList items={items} onFileSelect={() => console.log('asd')} />
+  </DashboardLayout>
+}
+
+// @ts-ignore
 DashboardPage.getLayout = (page: React.ReactNode) => {
   return <Layout title="Dashboard / Главная">{page}</Layout>;
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx: NextPageContext) => {
   try {
-    const items = await getAllFiles();
+    const items = await getAllFiles('all', ctx);
 
     return {
       props: {
