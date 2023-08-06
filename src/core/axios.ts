@@ -1,13 +1,18 @@
 import axios, { AxiosInstance } from 'axios';
+import Cookies from 'js-cookie';
 import { parseCookies } from "nookies";
 
 axios.defaults.baseURL = "http://localhost:7777";
 
+// for CSR
 axios.interceptors.request.use((config) => {
-  config.headers.Authorization = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFzZEBnbWFpbC5jb20iLCJzdWIiOjMsImlhdCI6MTY5MTA3NTUxNCwiZXhwIjoxNjkxMDgyNzE0fQ.J8chX7W2DCbTLukLnBp9_Xnw5Cw1Iguz-ZlFkYDPtM4";
-  return config;
+  const access_token  = Cookies.get('access_token')
+  config.headers.Authorization = "Bearer " + access_token;
+
+  return config
 });
 
+//for SSR
 export const setupAxiosWithToken = (context: any): AxiosInstance  => {
   const cookies = parseCookies(context);
   const token = cookies['access_token'] || '';

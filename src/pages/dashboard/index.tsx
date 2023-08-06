@@ -1,7 +1,7 @@
 import {
   getAllFiles,
 } from '@/api/index';
-import { FileList } from '@/components/fileList';
+import { Files } from '@/components/files';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { Layout } from '@/layouts/Layout';
 import { FileItem } from '@/types/files';
@@ -16,9 +16,7 @@ interface Props {
 }
 
 const DashboardPage: NextPage<Props> = ({items}) => {
-  return <DashboardLayout>
-    <FileList items={items} onFileSelect={() => console.log('asd')} />
-  </DashboardLayout>
+  return <DashboardLayout>{ <Files items={items} withActions={true}/>}</DashboardLayout>
 }
 
 // @ts-ignore
